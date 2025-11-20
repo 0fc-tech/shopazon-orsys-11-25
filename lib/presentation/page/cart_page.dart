@@ -79,7 +79,7 @@ class FilledCart extends StatelessWidget {
             itemCount: context.watch<Cart>().itemCount,
             itemBuilder: (context, index) {
               final product = context.watch<Cart>().items[index];
-              return ItemListProdct(product: product);
+              return ItemListProdct(product: product, addMode: false);
             },
             separatorBuilder: (_, __) => Divider(thickness: 1, height: 0),
           ),

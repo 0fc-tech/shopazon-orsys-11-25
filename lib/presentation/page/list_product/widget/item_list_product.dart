@@ -4,8 +4,9 @@ import 'package:shopazon/data/cart.dart';
 import 'package:shopazon/data/product.dart';
 
 class ItemListProdct extends StatelessWidget {
-  const ItemListProdct({super.key, required this.product});
+  const ItemListProdct({super.key, required this.product, this.addMode = true});
 
+  final bool addMode;
   final Product product;
 
   @override
@@ -19,9 +20,11 @@ class ItemListProdct extends StatelessWidget {
       ),
       leading: Image.network(product.image, width: 60),
       trailing: TextButton(
-        child: Text("AJOUTER"),
+        child: Text(addMode ? "AJOUTER" : "RETIRER"),
         onPressed: () {
-          context.read<Cart>().addItem(product);
+          addMode
+              ? context.read<Cart>().addItem(product)
+              : context.read<Cart>().removeItem(product);
         },
       ),
     );
