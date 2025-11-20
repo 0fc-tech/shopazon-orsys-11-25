@@ -74,13 +74,15 @@ class FilledCart extends StatelessWidget {
             ],
           ),
         ),
-        ListView.separated(
-          itemCount: context.watch<Cart>().itemCount,
-          itemBuilder: (context, index) {
-            final product = context.watch<Cart>().items[index];
-            return ItemListProdct(product: product);
-          },
-          separatorBuilder: (_, __) => Divider(thickness: 1, height: 0),
+        Expanded(
+          child: ListView.separated(
+            itemCount: context.watch<Cart>().itemCount,
+            itemBuilder: (context, index) {
+              final product = context.watch<Cart>().items[index];
+              return ItemListProdct(product: product);
+            },
+            separatorBuilder: (_, __) => Divider(thickness: 1, height: 0),
+          ),
         ),
       ],
     );
