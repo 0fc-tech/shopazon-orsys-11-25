@@ -1,8 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../data/product.dart';
-import 'widget/item_list_product.dart';
+import 'package:provider/provider.dart';
+import 'package:shopazon/data/cart.dart';
+import 'package:shopazon/data/repository/product_repository.dart';
+import 'package:shopazon/presentation/page/list_product/widget/listview_products.dart';
 
 class ListProductsPage extends StatelessWidget {
   ListProductsPage({super.key});
@@ -17,17 +19,23 @@ class ListProductsPage extends StatelessWidget {
             onPressed: () {
               context.go("/cart");
             },
-            icon: Icon(Icons.shopping_cart),
+            icon: Badge(
+              label: Text("${context.watch<Cart>().itemCount}"),
+              child: Icon(Icons.shopping_cart),
+            ),
           ),
         ],
       ),
-      body: ListView.separated(
-        itemCount: products.length,
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return ItemListProdct(product: product);
+      body: FutureBuilder(
+        future: ProductRepository(Dio()).getProducts(),
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.hasData && asyncSnapshot.data != null) {
+            return ListViewProducts(products: asyncSnapshot.data!);
+          } else if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          return Center(child: Icon(Icons.error));
         },
-        separatorBuilder: (_, __) => Divider(thickness: 1, height: 0),
       ),
     );
   }

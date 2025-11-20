@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopazon/data/cart.dart';
 import 'package:shopazon/data/product.dart';
 
 class ItemListProdct extends StatelessWidget {
@@ -16,7 +18,12 @@ class ItemListProdct extends StatelessWidget {
         style: Theme.of(context).textTheme.titleLarge,
       ),
       leading: Image.network(product.image, width: 60),
-      trailing: TextButton(child: Text("AJOUTER"), onPressed: () {}),
+      trailing: TextButton(
+        child: Text("AJOUTER"),
+        onPressed: () {
+          context.read<Cart>().addItem(product);
+        },
+      ),
     );
   }
 }

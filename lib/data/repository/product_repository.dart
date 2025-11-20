@@ -1,20 +1,43 @@
-import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:retrofit/retrofit.dart';
 
 import '../product.dart';
 
+part 'product_repository.g.dart';
+
+@RestApi(baseUrl: 'https://fakestoreapi.com/')
 abstract class ProductRepository {
-  Future<List<Product>> getProducts() async {
-    //Récupérer la liste de produits depuis l'API https://fakestoreapi.com/products
+  factory ProductRepository(Dio dio, {String? baseUrl}) = _ProductRepository;
 
-    //Parser et désérialiser la réponse en une liste de produits
-    final listProducts = (jsonDecode(response.body) as List<dynamic>)
-        .map((map) => Product.fromJson(map as Map<String, dynamic>))
-        .toList();
-    //jsonDecode
-    // Fonction fromJson du Product
+  @GET('/products')
+  Future<List<Product>> getProducts();
 
-    //Retourner soit une erreur (Future.errror()) ou la liste de Produits désérialisée
+  @GET('/products/{id}')
+  Future<Product> getProductById(@Path() int id);
+}
+
+/*
+abstract class ProductRepository {
+  static Future<List<Product>> getProducts() async {
+    final response = await get(Uri.parse("https://fakestoreapi.com/products"));
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as List<dynamic>)
+          .map((map) => Product.fromJson(map as Map<String, dynamic>))
+          .toList();
+    } else {
+      return Future.error("Couldn't get any data");
+    }
   }
 
-  //Product getById(int id) {}
+  static Future<Product> getProductById(int id) async {
+    final response = await get(
+      Uri.parse("https://fakestoreapi.com/products/$id"),
+    );
+    if (response.statusCode == 200) {
+      return Product.fromJson(jsonDecode(response.body));
+    } else {
+      return Future.error("Couldn't get any data");
+    }
+  }
 }
+*/

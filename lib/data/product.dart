@@ -14,7 +14,7 @@ class Product {
 
   Product(
     this.id,
-    this.name,
+    @JsonKey(name: "title") this.name,
     this.description,
     this.image,
     this.category,
