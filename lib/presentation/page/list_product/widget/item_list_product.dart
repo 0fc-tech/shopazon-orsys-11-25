@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shopazon/data/cart.dart';
 import 'package:shopazon/data/product.dart';
@@ -12,7 +13,7 @@ class ItemListProdct extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () => context.go("/detail/${product.id}"),
       title: Text(product.name, maxLines: 3, overflow: TextOverflow.ellipsis),
       subtitle: Text(
         product.getPrice(),
